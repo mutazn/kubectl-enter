@@ -1,0 +1,90 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  echo "Please specify node name"
+  exit 1
+fi
+
+NODE="$1"
+IMAGE="alpine"
+SSHIMAGE="mutaz/ssh-client"
+POD="connector-$(env LC_CTYPE=C tr -dc a-z0-9 < /dev/urandom | head -c 6)"
+NAMESPACE=""
+# Check the node
+kubectl get node "$NODE" >/dev/null || exit 1
+
+linux () {
+OVERRIDES="$(cat <<EOT
+{
+  "spec": {
+    "nodeName": "$NODE",
+    "hostPID": true,
+    "nodeSelector": {
+      "kubernetes.io/os": "linux"
+      },
+    "containers": [
+      {
+        "securityContext": {
+          "privileged": true
+        },
+        "image": "$IMAGE",
+        "name": "nsenter",
+        "stdin": true,
+        "stdinOnce": true,
+        "tty": true,
+        "command": [ "nsenter", "--target", "1", "--mount", "--uts", "--ipc", "--net", "--pid", "--", "bash", "-l" ]
+      }
+    ]
+  }
+}
+EOT
+)"
+
+echo "spawning \"$POD\" pod to connect to \"$NODE\" node"
+kubectl run --namespace "$NAMESPACE" --rm --image alpine --overrides="$OVERRIDES" --restart=Never -ti "$POD"
+}
+
+windows () {
+read -p "Enter your username to ssh to \"$NODE\" node: " username
+#Check username
+while [ -z "$username" ]
+do
+  read -p "Enter your username to ssh to \"$NODE\" node: " username
+done
+
+OVERRIDES="$(cat <<EOT
+{
+  "spec": {
+    "hostPID": true,
+    "nodeSelector": {
+      "kubernetes.io/os": "linux"
+      },
+    "containers": [
+      {
+        "securityContext": {
+          "privileged": true
+        },
+        "image": "$SSHIMAGE",
+        "name": "sshclient",
+        "stdin": true,
+        "stdinOnce": true,
+        "tty": true,
+        "command": [ "ssh", "$username@$NODE" ]
+      }
+    ]
+  }
+}
+EOT
+)"
+
+echo "spawning \"$POD\" pod to ssh to \"$NODE\" node using \"$username\" username"
+kubectl run --namespace "$NAMESPACE" --rm --image alpine --overrides="$OVERRIDES" --restart=Never -ti "$POD"
+}
+
+NODETYPE=$(kubectl get node $NODE -o jsonpath="{.metadata.labels.\kubernetes\.io/os}")
+if [ $NODETYPE = "linux" ]
+then
+   linux
+else
+   windows
+fi
