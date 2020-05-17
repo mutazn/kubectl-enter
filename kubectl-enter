@@ -82,7 +82,8 @@ kubectl run --namespace "$NAMESPACE" --rm --image alpine --overrides="$OVERRIDES
 }
 
 NODETYPE=$(kubectl get node $NODE -o jsonpath="{.metadata.labels.\kubernetes\.io/os}")
-if [ $NODETYPE = "linux" ]
+NODETYPEbeta=$(kubectl get node $NODE -o jsonpath="{.metadata.labels.\beta\.kubernetes\.io/os}")
+if [ $NODETYPE = "linux" ] || [ $NODETYPEbeta = "linux" ]
 then
    linux
 else
