@@ -2,7 +2,7 @@
 
 if [ -z "$1" ]; then
   echo "Please specify node name:"
-  kubectl get nodes -o jsonpath="{.items[*].metadata.name}";echo
+  kubectl get nodes -o jsonpath="{.items[*].metadata.name}" | tr " " "\n" ;echo
   exit 1
 fi
 
