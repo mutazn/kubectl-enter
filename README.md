@@ -35,6 +35,10 @@ kubectl enter <node>
   ```
   kubectl cp connector-xxxxxx:/FilePathOnLinuxNode /DestPathOnYourLoaclMachine/Filename
   ```
+  *Example:*
+  ```
+  kubectl cp connector-xxxxxx:/tmp/logs.zip /tmp/logs.zip
+  ```
 **2. You can copy files from Windows worker node by the following steps:**
 
 *Note: Username and Password are required for Windows node.*
