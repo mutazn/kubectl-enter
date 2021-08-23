@@ -17,7 +17,6 @@ sudo mv ./kubectl-enter /usr/local/bin/kubectl-enter
 ```
 kubectl-enter <node>
 kubectl enter <node>
-
 ```
 *Note: You need to be able to start privileged containers for that.*
 
@@ -56,7 +55,7 @@ kubectl enter <node>
   ```
 - Copy the file from Windows node to the Linux node using scp command:
   ```
-  scp <WindowsNodeUserName>@<WindowsNodeNameOrIPaddress>:/FilePathOnWindowsNode /DestPathOnYourLinuxNode/Filename
+  scp <WindowsNodeUserName>@<WindowsNodeNameOrIPaddress>:/FilePathOnWindowsNode /DestPathOnLinuxNode/Filename
   ```
   *Example:*
   ```
