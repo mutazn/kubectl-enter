@@ -19,5 +19,19 @@ kubectl-enter <node>
 kubectl enter <node>
 
 ```
+*Note: You need to be able to start privileged containers for that.*
 
-*You need to be able to start privileged containers for that.*
+## How to copy files from worker nodes to local machine?
+**1.** You can copy files from Linux worker node by the following steps:
+- Connect to the Linux node using kubectl enter command: 
+  ```
+  kubectl enter <node>
+  ```
+- Open another shell and look for the connector-xxxxxx pod in default namespace: 
+  ```
+  kubectl get pod
+  ```
+- Copy the file from connector pod which will be the Linux worker node to your local machine:
+  ```
+  kubectl cp connector-xxxxxx:/FilePathOnLinuxNode /DestPathOnYourLoaclMachine/Filename
+  ```
