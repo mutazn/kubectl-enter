@@ -50,7 +50,7 @@ kubectl enter <node>
   ```
   kubectl get pod
   ```
-- Exec to the connector which will be a Liunx node in your cluster:
+- Exec to the connector pod which will be a Liunx node in your cluster:
   ```
   kubectl exec -it connector-xxxxxx -- bash
   ```
