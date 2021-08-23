@@ -29,7 +29,7 @@ kubectl enter <node>
   ```
 - Open another shell and look for the connector-xxxxxx pod in default namespace: 
   ```
-  kubectl get pod
+  kubectl get pods
   ```
 - Copy the file from connector pod which will be the Linux worker node to your local machine:
   ```
@@ -48,7 +48,7 @@ kubectl enter <node>
   ```
 - Open another shell and look for the connector-xxxxxx pod in default namespace: 
   ```
-  kubectl get pod
+  kubectl get pods
   ```
 - Exec to the connector pod which will be a Liunx node in your cluster:
   ```
@@ -56,7 +56,7 @@ kubectl enter <node>
   ```
 - Copy the file from Windows node to the Linux node using scp command:
   ```
-  scp <WindowsNodeUserName>@<aksNodeOrIPaddress>:/FilePathOnWindowsNode /DestPathOnYourLinuxNode/Filename
+  scp <WindowsNodeUserName>@<WindowsNodeNameOrIPaddress>:/FilePathOnWindowsNode /DestPathOnYourLinuxNode/Filename
   ```
   *Example:*
   ```
