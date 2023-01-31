@@ -15,6 +15,11 @@ IMAGE="alpine"
 SSHIMAGE="mutaz/ssh-client"
 POD="connector-$(env LC_CTYPE=C tr -dc a-z0-9 < /dev/urandom | head -c 6)"
 NAMESPACE=""
+
+if [ -n "${CUSTOM_IMAGE}" ]; then
+    IMAGE="${CUSTOM_IMAGE}"
+fi
+
 # Check the node
 kubectl get node "$NODE" >/dev/null || exit 1
 
